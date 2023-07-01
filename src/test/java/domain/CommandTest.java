@@ -1,24 +1,73 @@
 package domain;
 
+import chess.domain.additional.Command;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommandTest {
 
-    @DisplayName("입력값을 통해 Command를 만든다")
+    @DisplayName("입력값을 통해 start Command를 만든다")
     @Test
-    void createCommand() {
+    void createStartCommand() {
         //given
         String input = "start";
 
-        //when
-        Command command = Command.from(input);
+        //when2
+        Command command = Command.createStartCommand(input);
 
         //then
         assertThat(command).isEqualTo(Command.START);
+    }
+
+    @DisplayName("입력값을 통해 end Command를 만든다")
+    @Test
+    void createEndCommand() {
+        //given
+        String input = "end";
+
+        //when2
+        Command command = Command.createCommand(input);
+
+        //then
+        assertThat(command).isEqualTo(Command.END);
+    }
+
+    @DisplayName("입력값을 통해 move Command를 만든다")
+    @Test
+    void createMoveCommand() {
+        //given
+        String input = "move a2 d3";
+
+        //when2
+        Command command = Command.createCommand(input);
+
+        //then
+        assertThat(command).isEqualTo(Command.MOVE);
+    }
+
+    @DisplayName("게임이 진행중일때 start를 입력하면 예외가 발생한다.")
+    @Test
+    void createCommandException() {
+        //given
+        String input = "start";
+
+        //when & then
+        assertThatThrownBy(() -> Command.createCommand(input))
+            .isInstanceOf(IllegalStateException.class);
+    }
+
+    @ParameterizedTest
+    @DisplayName("잘못된 이동정보를 주면 예외가 발생한다.")
+    @CsvSource({"moveasd", "movesd sad", "move vc s", "move"})
+    void createCommandException(final String input) {
+        //when & then
+        assertThatThrownBy(() -> Command.createCommand(input))
+            .isInstanceOf(IllegalStateException.class);
     }
 
     @DisplayName("입력값을 통해 Command를 만들때 잘못된 값이면 예외가 발생한다.")
@@ -28,47 +77,8 @@ class CommandTest {
         String input = "error";
 
         //when & then
-        assertThatThrownBy(() -> Command.from(input))
+        assertThatThrownBy(() -> Command.createStartCommand(input))
             .isInstanceOf(IllegalStateException.class);
-    }
-
-    @DisplayName("입력값을 통해 올바른 Command라면 true를 반환한다")
-    @Test
-    void isCorrectCommandTrue() {
-        //given
-        String input = "end";
-
-        //when
-        boolean isCorrect = Command.isCorrectCommand(input);
-
-        //then
-        assertThat(isCorrect).isTrue();
-    }
-
-    @DisplayName("입력값을 통해 올바른 Command가 아니면 false를 반환한다")
-    @Test
-    void isCorrectCommandFalse() {
-        //given
-        String input = "error";
-
-        //when
-        boolean isCorrect = Command.isCorrectCommand(input);
-
-        //then
-        assertThat(isCorrect).isFalse();
-    }
-
-    @DisplayName("해당 input이 start인지 반환한다")
-    @Test
-    void isStartCommand() {
-        //given
-        String input = "start";
-
-        //when
-        boolean isStart = Command.isStartCommand(input);
-
-        //then
-        assertThat(isStart).isTrue();
     }
 
     @DisplayName("해당 Command가 start인지 반환한다.")
