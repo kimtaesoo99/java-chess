@@ -1,4 +1,4 @@
-package domain;
+package chess.domain.additional;
 
 public enum Error {
 
@@ -14,7 +14,8 @@ public enum Error {
     WRONG_RANK_NAME("잘못된 rank의 이름입니다."),
     CAN_START_WITH_START_COMMAND("게임을 시작하려면 start를 입력해주세요"),
     EARLY_START_GAME("이미 게임이 진행중입니다."),
-    WRONG_MOVE_COMMAND("잘못된 이동정보입니다.");
+    WRONG_MOVE_COMMAND("잘못된 이동정보입니다."),
+    WRONG_TURN("이전에 움직인 기물을 색상과 현재 움직이려는 기물의 색상이 같습니다.");
 
     private final String message;
 
