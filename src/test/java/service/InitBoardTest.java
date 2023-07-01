@@ -1,7 +1,8 @@
 package service;
 
-import domain.Location;
-import domain.Pieces;
+import chess.domain.board.Location;
+import chess.domain.pieces.Pieces;
+import chess.service.InitBoard;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

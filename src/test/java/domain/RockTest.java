@@ -1,5 +1,9 @@
 package domain;
 
+import chess.domain.board.Location;
+import chess.domain.board.State;
+import chess.domain.pieces.Pieces;
+import chess.domain.pieces.Rock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
