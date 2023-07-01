@@ -1,4 +1,7 @@
-package domain;
+package chess.domain.pieces;
+
+import chess.domain.board.Location;
+import chess.domain.board.State;
 
 public class Queen extends Pieces {
 
@@ -7,7 +10,7 @@ public class Queen extends Pieces {
     }
 
     @Override
-    boolean canMove(final char preRank, final char preFile, final Location moveLocation) {
+    public boolean canMove(final char preRank, final char preFile, final Location moveLocation) {
         char moveRank = moveLocation.getRank();
         char moveFile = moveLocation.getFile();
 
@@ -26,12 +29,12 @@ public class Queen extends Pieces {
     }
 
     @Override
-    boolean isKnight() {
+    public boolean isKnight() {
         return false;
     }
 
     @Override
-    boolean isPawn() {
+    public boolean isPawn() {
         return false;
     }
 }

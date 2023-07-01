@@ -1,6 +1,16 @@
-package domain;
+package chess.domain.pieces;
 
-import static domain.Direction.*;
+import chess.domain.board.Location;
+import chess.domain.board.State;
+
+import static chess.domain.additional.Direction.DOWN;
+import static chess.domain.additional.Direction.FIRST_DIAGONAL;
+import static chess.domain.additional.Direction.FOURTH_DIAGONAL;
+import static chess.domain.additional.Direction.LEFT;
+import static chess.domain.additional.Direction.RIGHT;
+import static chess.domain.additional.Direction.SECOND_DIAGONAL;
+import static chess.domain.additional.Direction.THIRD_DIAGONAL;
+import static chess.domain.additional.Direction.UP;
 
 public class King extends Pieces {
 
@@ -9,7 +19,7 @@ public class King extends Pieces {
     }
 
     @Override
-    boolean canMove(final char preRank, final char preFile, final Location moveLocation) {
+    public boolean canMove(final char preRank, final char preFile, final Location moveLocation) {
         return checkCanMove(preRank, preFile, moveLocation);
     }
 
@@ -25,12 +35,12 @@ public class King extends Pieces {
     }
 
     @Override
-    boolean isKnight() {
+    public boolean isKnight() {
         return false;
     }
 
     @Override
-    boolean isPawn() {
+    public boolean isPawn() {
         return false;
     }
 }
