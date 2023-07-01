@@ -1,18 +1,20 @@
-package domain;
+package chess.domain.board;
 
+import chess.domain.additional.Direction;
+import chess.domain.pieces.Pieces;
+
+import java.util.Collections;
 import java.util.Map;
 
-import static domain.Error.*;
+import static chess.domain.additional.Error.CAN_NOT_MOVE_BECAUSE_OBSTACLE;
+import static chess.domain.additional.Error.CAN_NOT_MOVE_RANGE;
+import static chess.domain.additional.Error.DO_NOT_STAY;
+import static chess.domain.additional.Error.HAS_NOT_PIECES;
+import static chess.domain.additional.Error.MOVE_LOCATION_IS_SAME_COLOR;
+import static chess.domain.additional.Error.PAWN_MOVE_DIAGONALLY_WITH_ENEMY;
+import static chess.domain.additional.Error.WRONG_TURN;
 
 public class Board {
-
-    private static final int FILE_MAX = 8;
-    private static final int FILE_INIT = 1;
-    private static final int RANK_MAX = 7;
-    private static final int RANK_INIT = 0;
-    private static final String EMPTY = ".";
-    private static final char FIRST_RANK = 'a';
-    private static final char FIRST_FILE = '0';
 
     private final Map<Location, Pieces> board;
 
@@ -20,42 +22,27 @@ public class Board {
         this.board = board;
     }
 
-    public String getBoardStatus() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int file = FILE_MAX; file >= FILE_INIT; file--) {
-            findBoardStatus(file, stringBuilder);
-        }
-        return stringBuilder.toString();
-    }
-
-    private void findBoardStatus(final int file, final StringBuilder stringBuilder) {
-        for (int rank = RANK_INIT; rank <= RANK_MAX; rank++) {
-            Location location = Location.from((char) (FIRST_RANK + rank), (char) (FIRST_FILE + file));
-            addBoardStatus(location, stringBuilder);
-        }
-    }
-
-    private void addBoardStatus(final Location location, final StringBuilder stringBuilder) {
-        if (board.containsKey(location)) {
-            stringBuilder.append(board.get(location).getName());
-            return;
-        }
-        stringBuilder.append(EMPTY);
-    }
-
-    public void movePieces(final Location preLocation, final Location moveLocation) {
-        validationMovePieces(preLocation, moveLocation);
+    public void movePieces(final Location preLocation, final Location moveLocation, final State turn) {
+        validationMovePieces(preLocation, moveLocation, turn);
         move(preLocation, moveLocation);
     }
 
-    private void validationMovePieces(final Location preLocation, final Location moveLocation) {
+    private void validationMovePieces(final Location preLocation, final Location moveLocation, final State turn) {
         checkExistPiecesInLocation(preLocation, moveLocation);
+        validationTurn(preLocation, turn);
         checkCanMovePiecesInLocation(preLocation, moveLocation);
+
         if (board.get(preLocation).isPawn()) {
             checkPawnMove(preLocation, moveLocation);
             return;
         }
         checkExistPiecesInRoute(preLocation, moveLocation);
+    }
+
+    private void validationTurn(final Location preLocation, final State turn) {
+        if (!board.get(preLocation).isSameColor(turn)) {
+            throw new IllegalStateException(WRONG_TURN.getMessage());
+        }
     }
 
     private void checkExistPiecesInLocation(final Location preLocation, final Location moveLocation) {
@@ -71,7 +58,8 @@ public class Board {
     private boolean isSameColor(final Location preLocation, final Location moveLocation) {
         Pieces piecesInPreIndex = board.get(preLocation);
         Pieces piecesInMoveIndex = board.get(moveLocation);
-        return piecesInPreIndex.isBlack() == piecesInMoveIndex.isBlack();
+
+        return piecesInPreIndex.isSameColor(piecesInMoveIndex);
     }
 
     private void checkCanMovePiecesInLocation(final Location preLocation, final Location moveLocation) {
@@ -133,6 +121,10 @@ public class Board {
         Pieces pieces = board.get(preLocation);
         board.remove(preLocation);
         board.put(moveLocation, pieces);
+    }
+
+    public Map<Location, Pieces> getBoard() {
+        return Collections.unmodifiableMap(board);
     }
 }
 
