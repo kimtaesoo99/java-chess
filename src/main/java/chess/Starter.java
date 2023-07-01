@@ -1,6 +1,8 @@
-import controller.Controller;
+package chess;
 
-public class Main {
+import chess.controller.Controller;
+
+public class Starter {
     public static void main(String[] args) {
         Controller controller = new Controller();
         controller.start();
