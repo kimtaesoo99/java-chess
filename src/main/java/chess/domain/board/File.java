@@ -1,8 +1,8 @@
-package domain;
+package chess.domain.board;
 
 import java.util.Arrays;
 
-import static domain.Error.WRONG_FILE_NAME;
+import static chess.domain.additional.Error.WRONG_FILE_NAME;
 
 public enum File {
 
@@ -21,14 +21,14 @@ public enum File {
         this.name = name;
     }
 
+    public boolean isSameFile(final char file) {
+        return this.name == file;
+    }
+
     public static File getFile(final char name) {
         return Arrays.stream(File.values())
             .filter(file -> file.name == (name))
             .findAny().orElseThrow(() -> new IllegalStateException(WRONG_FILE_NAME.getMessage()));
-    }
-
-    public boolean isSameFile(final char file) {
-        return this.name == file;
     }
 
     public char getName() {

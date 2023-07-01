@@ -1,4 +1,4 @@
-package domain;
+package chess.domain.board;
 
 import java.util.Objects;
 
@@ -41,8 +41,12 @@ public class Location {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Location location = (Location) o;
         return getRank() == location.getRank() && getFile() == location.getFile();
     }

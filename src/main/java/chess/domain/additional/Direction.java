@@ -1,8 +1,8 @@
-package domain;
+package chess.domain.additional;
 
 import java.util.Arrays;
 
-import static domain.Error.WRONG_ROW_OR_COLUMN;
+import static chess.domain.additional.Error.WRONG_ROW_OR_COLUMN;
 
 public enum Direction {
 
@@ -25,6 +25,8 @@ public enum Direction {
     FOURTH_DIAGONAL_LEFT(-2,1),
     FOURTH_DIAGONAL_UP(-1,2);
 
+    private static final int ZERO = 0;
+
     private final int row;
     private final int column;
 
@@ -33,19 +35,20 @@ public enum Direction {
         this.column = column;
     }
 
-    public static Direction from(final int row, final int column) {
-        return Arrays.stream(Direction.values())
-            .filter(direction -> isSameDirection(row, column, direction))
-            .findAny().orElseThrow(() -> new IllegalStateException(WRONG_ROW_OR_COLUMN.getMessage()));
-    }
-
     private static boolean isSameDirection(final int row, final int column, final Direction direction) {
         return direction.row == row && direction.column == column;
     }
 
+    public static Direction from(final int row, final int column) {
+        return Arrays.stream(Direction.values())
+            .filter(direction -> isSameDirection(row, column, direction))
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException(WRONG_ROW_OR_COLUMN.getMessage()));
+    }
+
     public static int getSubtractDirection(final char pre, final char move) {
         int gap = move - pre;
-        return Integer.compare(gap, 0);
+        return Integer.compare(gap, ZERO);
     }
 
     public boolean isUpOrDown() {

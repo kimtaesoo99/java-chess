@@ -1,4 +1,4 @@
-package domain;
+package chess.domain.board;
 
 public enum State {
 
@@ -13,7 +13,11 @@ public enum State {
     WHITE_KNIGHT("n", "white"),
     WHITE_ROCK("r", "white"),
     WHITE_QUEEN("q", "white"),
-    WHITE_KING("k", "white");
+    WHITE_KING("k", "white"),
+    BLACK_TEAM("","black"),
+    WHITE_TEAM("","white");
+
+    private static final String BLACK = "black";
 
     private final String name;
     private final String color;
@@ -23,11 +27,22 @@ public enum State {
         this.color = color;
     }
 
-    public String getName() {
-        return name;
+    public boolean isBlack() {
+        return color.equals(BLACK);
     }
 
-    public boolean isBlack() {
-        return color.equals("black");
+    public boolean isSameColor(final State turn) {
+        return this.color.equals(turn.color);
+    }
+
+    public State changeTurn() {
+        if (this.equals(BLACK_TEAM)){
+            return WHITE_TEAM;
+        }
+        return BLACK_TEAM;
+    }
+
+    public String getName() {
+        return name;
     }
 }
